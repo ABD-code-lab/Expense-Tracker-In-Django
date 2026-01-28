@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack Pro | Advanced Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .plan-card {
+            transition: all 0.3s ease;
+        }
+        
+        .plan-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .highlighted-plan {
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .testimonial-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-800">FinTrack<span class="text-purple-600">Pro</span></span>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#" class="text-purple-600 border-b-2 border-purple-600 inline-flex items-center px-1 pt-1 text-sm font-medium">Home</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">Dashboard</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">Reports</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">Budgeting</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">Integrations</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="hidden md:flex items-center space-x-4">
+                        <a href="{% url 'login' %}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Log In</a>
+                        <a href="{% url 'register' %}" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium hover:shadow-lg transition duration-300">Sign Up Free</a>
+                    </div>
+                    <div class="md:hidden">
+                        <button type="button" class="text-gray-500 hover:text-gray-900 focus:outline-none" id="mobile-menu-button">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden bg-white border-t" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="text-purple-600 block px-3 py-2 text-base font-medium">Home</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900 block px-3 py-2 text-base font-medium">Dashboard</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900 block px-3 py-2 text-base font-medium">Reports</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900 block px-3 py-2 text-base font-medium">Budgeting</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900 block px-3 py-2 text-base font-medium">Integrations</a>
+                <div class="pt-4">
+                    <a href="#" class="block text-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-5 py-3 rounded-lg font-medium">Sign Up Free</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight">Master Your Finances with <span class="text-yellow-300">Advanced</span> Expense Tracking</h1>
+                    <p class="mt-6 text-lg text-purple-100">Take control of your financial life with our intelligent expense tracker. AI-powered insights, automated categorization, and real-time reporting to help you save more and spend wisely.</p>
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                        <a href="#" class="bg-white text-purple-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition duration-300 shadow-lg text-center">Start Free Trial</a>
+                        <a href="#" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-purple-700 transition duration-300 text-center">Watch Demo <i class="fas fa-play-circle ml-2"></i></a>
+                    </div>
+                    <p class="mt-6 text-purple-100"><i class="fas fa-check-circle text-yellow-300 mr-2"></i>No credit card required • 14-day free trial</p>
+                </div>
+                <div class="relative">
+                    <div class="bg-white rounded-2xl shadow-2xl p-6 text-gray-800">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Monthly Overview</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">+12% Savings</span>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="font-medium">Food & Dining</span>
+                                    <span class="font-bold">$425</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-red-500 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="font-medium">Transportation</span>
+                                    <span class="font-bold">$280</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="font-medium">Entertainment</span>
+                                    <span class="font-bold">$180</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-purple-500 h-2 rounded-full" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="font-medium">Shopping</span>
+                                    <span class="font-bold">$320</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-gray-200 flex justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Total Spent</p>
+                                <p class="text-2xl font-bold">$1,205</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Remaining Budget</p>
+                                <p class="text-2xl font-bold text-green-600">$795</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative elements -->
+                    <div class="absolute -top-4 -right-4 w-20 h-20 bg-yellow-400 rounded-full opacity-20"></div>
+                    <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-purple-400 rounded-full opacity-20"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Why FinTrack<span class="text-purple-600">Pro</span>?</h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">We're revolutionizing personal finance management with cutting-edge technology and intuitive design. Our mission is to empower individuals to achieve financial freedom.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Our Story</h3>
+                        <p class="text-gray-700 mb-6">Founded in 2020 by financial experts and tech innovators, FinTrackPro was born from a simple observation: most people struggle with financial tracking because existing tools are either too complex or too simplistic.</p>
+                        <p class="text-gray-700 mb-8">We've created a platform that combines the power of advanced analytics with an interface that anyone can use. Today, we help over 500,000 users worldwide manage their finances effectively.</p>
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="CEO">
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-lg font-medium text-gray-900">Alex Johnson</p>
+                                <p class="text-gray-600">CEO & Founder</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-xl stat-card">
+                            <div class="text-3xl font-bold text-purple-600">500K+</div>
+                            <p class="text-gray-700 mt-2">Active Users</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl stat-card">
+                            <div class="text-3xl font-bold text-purple-600">$2.1B</div>
+                            <p class="text-gray-700 mt-2">Tracked Annually</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl stat-card">
+                            <div class="text-3xl font-bold text-purple-600">94%</div>
+                            <p class="text-gray-700 mt-2">User Satisfaction</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl stat-card">
+                            <div class="text-3xl font-bold text-purple-600">47</div>
+                            <p class="text-gray-700 mt-2">Countries Served</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 p-8 rounded-2xl">
+                        <h4 class="text-xl font-bold text-gray-900 mb-4">Our Vision</h4>
+                        <p class="text-gray-700">To create a world where everyone has complete visibility and control over their financial health, enabling smarter decisions and greater financial freedom.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-gradient-to-b from-white to-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Powerful Features</h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">Everything you need to track, analyze, and optimize your expenses in one powerful platform.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-2xl feature-icon"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">AI-Powered Insights</h3>
+                    <p class="text-gray-700">Our machine learning algorithms analyze your spending patterns and provide personalized recommendations to help you save more.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mb-6">
+                        <i class="fas fa-sync-alt text-2xl feature-icon"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Automatic Sync</h3>
+                    <p class="text-gray-700">Connect your bank accounts, credit cards, and investment portfolios for real-time transaction tracking and categorization.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-pie text-2xl feature-icon"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Advanced Analytics</h3>
+                    <p class="text-gray-700">Dive deep into your financial data with customizable reports, forecasting tools, and interactive visualizations.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center mb-6">
+                        <i class="fas fa-bullseye text-2xl feature-icon"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Smart Budgeting</h3>
+                    <p class="text-gray-700">Set personalized budgets for different categories and receive alerts when you're approaching your limits.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl feature-icon"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Mobile-First Design</h3>
+                    <p class="text-gray-700">Track expenses on the go with our iOS and Android apps that sync seamlessly with the web platform.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-2xl feature-icon"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Bank-Level Security</h3>
+                    <p class="text-gray-700">Your financial data is protected with 256-bit encryption and multi-factor authentication for peace of mind.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Section 1: Testimonials -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Trusted by Thousands</h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">See what our users are saying about how FinTrackPro transformed their financial lives.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-8 rounded-2xl testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="flex-shrink-0">
+                            <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Sarah">
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-lg font-medium text-gray-900">Sarah Chen</p>
+                            <p class="text-gray-600">Marketing Manager</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"FinTrackPro helped me save $3,000 in just 6 months. The automated categorization and spending alerts completely changed how I manage my money."</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-2xl testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="flex-shrink-0">
+                            <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Michael">
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-lg font-medium text-gray-900">Michael Rodriguez</p>
+                            <p class="text-gray-600">Software Developer</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"As a freelancer, tracking expenses was a nightmare. FinTrackPro's tax categorization and reporting features saved me hours every month."</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-2xl testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="flex-shrink-0">
+                            <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Jessica">
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-lg font-medium text-gray-900">Jessica Williams</p>
+                            <p class="text-gray-600">Small Business Owner</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"The budgeting feature helped me identify unnecessary subscriptions I'd forgotten about. I'm now saving $200/month thanks to their insights!"</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Choose Your Plan</h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">Flexible pricing that scales with your needs. Start with our free plan and upgrade when you're ready.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Basic Plan -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg plan-card">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Basic</h3>
+                        <p class="text-gray-600">For individuals getting started with expense tracking</p>
+                        <div class="mt-6">
+                            <span class="text-4xl font-bold text-gray-900">$0</span>
+                            <span class="text-gray-600">/month</span>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Track up to 50 transactions/month</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Manual expense entry</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Basic spending reports</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>1 budget category</span>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fas fa-times mr-3"></i>
+                            <span>Bank account sync</span>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fas fa-times mr-3"></i>
+                            <span>AI-powered insights</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#" class="block w-full text-center bg-gray-100 text-gray-800 font-bold py-3 px-4 rounded-lg hover:bg-gray-200 transition duration-300">Get Started</a>
+                </div>
+                
+                <!-- Pro Plan (Highlighted) -->
+                <div class="bg-gradient-to-br from-purple-600 to-indigo-600 p-8 rounded-2xl shadow-2xl plan-card highlighted-plan transform md:-translate-y-4">
+                    <div class="text-center mb-8">
+                        <div class="inline-block bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-full mb-4">MOST POPULAR</div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
+                        <p class="text-purple-100">For serious budgeters and small families</p>
+                        <div class="mt-6">
+                            <span class="text-4xl font-bold text-white">$9</span>
+                            <span class="text-purple-200">/month</span>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-yellow-300 mr-3"></i>
+                            <span class="text-white">Unlimited transactions</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-yellow-300 mr-3"></i>
+                            <span class="text-white">Auto-sync with 5 bank accounts</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-yellow-300 mr-3"></i>
+                            <span class="text-white">Advanced analytics & reports</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-yellow-300 mr-3"></i>
+                            <span class="text-white">Up to 10 budget categories</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-yellow-300 mr-3"></i>
+                            <span class="text-white">AI-powered insights</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-yellow-300 mr-3"></i>
+                            <span class="text-white">Email & SMS alerts</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#" class="block w-full text-center bg-white text-purple-700 font-bold py-3 px-4 rounded-lg hover:bg-gray-100 transition duration-300">Start Free Trial</a>
+                </div>
+                
+                <!-- Business Plan -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg plan-card">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Business</h3>
+                        <p class="text-gray-600">For teams and small businesses</p>
+                        <div class="mt-6">
+                            <span class="text-4xl font-bold text-gray-900">$29</span>
+                            <span class="text-gray-600">/month</span>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Everything in Pro</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Up to 5 team members</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Expense approval workflows</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Custom reporting</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Receipt scanning (up to 100/month)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Dedicated account manager</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#" class="block w-full text-center bg-gray-100 text-gray-800 font-bold py-3 px-4 rounded-lg hover:bg-gray-200 transition duration-300">Contact Sales</a>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center text-gray-600">
+                <p>All plans include a 14-day free trial of Pro features. No credit card required to start.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Section 2: Integration Showcase -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Seamless Integrations</h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">Connect FinTrackPro with your favorite tools and services for a unified financial experience.</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
+                <div class="bg-gray-50 p-6 rounded-xl flex items-center justify-center">
+                    <i class="fab fa-cc-visa text-4xl text-blue-600"></i>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl flex items-center justify-center">
+                    <i class="fab fa-cc-mastercard text-4xl text-red-600"></i>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl flex items-center justify-center">
+                    <i class="fab fa-paypal text-4xl text-blue-500"></i>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl flex items-center justify-center">
+                    <i class="fab fa-google-pay text-4xl text-gray-700"></i>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl flex items-center justify-center">
+                    <i class="fab fa-apple-pay text-4xl text-gray-900"></i>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl flex items-center justify-center">
+                    <i class="fab fa-amazon-pay text-4xl text-yellow-600"></i>
+                </div>
+            </div>
+            
+            <div class="mt-16 grid md:grid-cols-3 gap-8">
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-plug text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">100+ Integrations</h3>
+                    <p class="text-gray-700">Connect with all major banks, credit cards, payment processors, and accounting software.</p>
+                </div>
+                
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-bolt text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Real-Time Sync</h3>
+                    <p class="text-gray-700">Transactions appear in your dashboard within seconds of occurring in your connected accounts.</p>
+                </div>
+                
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-lock text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Secure Connections</h3>
+                    <p class="text-gray-700">We use bank-level security protocols and read-only access to keep your financial data safe.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-chart-line text-purple-400 text-2xl"></i>
+                        <span class="ml-2 text-xl font-bold">FinTrack<span class="text-purple-400">Pro</span></span>
+                    </div>
+                    <p class="text-gray-400">Advanced expense tracking for individuals and businesses. Take control of your financial future today.</p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Product</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Integrations</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Roadmap</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Changelog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Resources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Community</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">API</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 FinTrackPro. All rights reserved.</p>
+                <p class="mt-2 text-sm">Designed with <i class="fas fa-heart text-red-500"></i> for financial empowerment</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Simple animation for stat cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all stat cards for animation
+        document.querySelectorAll('.stat-card, .feature-icon, .testimonial-card').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Plan card hover effect enhancement
+        document.querySelectorAll('.plan-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('highlighted-plan')) {
+                    this.classList.add('shadow-xl');
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('highlighted-plan')) {
+                    this.classList.remove('shadow-xl');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

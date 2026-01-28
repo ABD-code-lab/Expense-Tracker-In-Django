@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if expense %}Edit{% else %}Add{% endif %} Expense | FinTrack Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .warning-bg {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .danger-bg {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Container -->
+    <div class="max-w-4xl mx-auto p-6">
+        <!-- Header -->
+        <div class="mb-8 fade-in">
+            <div class="flex items-center mb-2">
+                <a href="{% url 'dashboard' %}" class="text-gray-600 hover:text-purple-600 mr-4">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="text-3xl font-bold text-gray-800">
+                    {% if expense %}
+                    <span class="gradient-text">Edit Expense</span>
+                    {% else %}
+                    <span class="gradient-text">Add New Expense</span>
+                    {% endif %}
+                </h1>
+            </div>
+            <p class="text-gray-600 ml-10">
+                {% if expense %}
+                Update your expense details below
+                {% else %}
+                Record a new expense transaction
+                {% endif %}
+            </p>
+        </div>
+        
+        <!-- Form Card -->
+        <div class="bg-white rounded-2xl card-shadow overflow-hidden fade-in" style="animation-delay: 0.1s;">
+            <!-- Form Header -->
+            <div class="gradient-bg px-8 py-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-4">
+                        <i class="fas fa-shopping-cart text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Expense Details</h2>
+                        <p class="text-purple-100 text-sm">Fill in the details below</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Content -->
+            <div class="p-8">
+                <form method="POST" id="expenseForm">
+                    {% csrf_token %}
+                    
+                    <!-- Title Field -->
+                    <div class="mb-6">
+                        <label class="form-label flex items-center">
+                            <i class="fas fa-heading text-purple-600 mr-2"></i>
+                            Title
+                        </label>
+                        <input 
+                            type="text" 
+                            name="title" 
+                            placeholder="Enter expense title (e.g., Groceries, Restaurant, Fuel)" 
+                            value="{{ expense.title|default:'' }}" 
+                            required
+                            class="w-full px-4 py-3 rounded-lg form-input focus:outline-none"
+                        >
+                        <p class="text-gray-500 text-sm mt-2">Give your expense a descriptive title</p>
+                    </div>
+                    
+                    <!-- Amount Field -->
+                    <div class="mb-6">
+                        <label class="form-label flex items-center">
+                            <i class="fas fa-money-bill-wave text-red-600 mr-2"></i>
+                            Amount (PKR)
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">PKR</span>
+                            </div>
+                            <input 
+                                type="number" 
+                                name="amount" 
+                                step="0.01" 
+                                placeholder="0.00" 
+                                value="{{ expense.amount|default:'' }}" 
+                                required
+                                class="w-full px-4 py-3 pl-16 rounded-lg form-input focus:outline-none"
+                            >
+                        </div>
+                        <p class="text-gray-500 text-sm mt-2">Enter the expense amount in Pakistani Rupees</p>
+                    </div>
+                    
+                    <!-- Notes Field -->
+                    <div class="mb-6">
+                        <label class="form-label flex items-center">
+                            <i class="fas fa-sticky-note text-yellow-600 mr-2"></i>
+                            Notes (Optional)
+                        </label>
+                        <textarea 
+                            name="notes" 
+                            placeholder="Add any additional notes or details about this expense..."
+                            rows="4"
+                            class="w-full px-4 py-3 rounded-lg form-input focus:outline-none resize-none"
+                        >{{ expense.notes|default:'' }}</textarea>
+                        <p class="text-gray-500 text-sm mt-2">Optional: Add context or details about this expense</p>
+                    </div>
+                    
+                    <!-- Date Field -->
+                    <div class="mb-8">
+                        <label class="form-label flex items-center">
+                            <i class="fas fa-calendar-day text-blue-600 mr-2"></i>
+                            Date
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-calendar text-gray-400"></i>
+                            </div>
+                            <input 
+                                name="date" 
+                                type="date" 
+                                value="{{ expense.date|date:'Y-m-d' }}" 
+                                required
+                                class="w-full px-4 py-3 pl-12 rounded-lg form-input focus:outline-none"
+                            >
+                        </div>
+                        <p class="text-gray-500 text-sm mt-2">Select the date when this expense occurred</p>
+                    </div>
+                    
+                    <!-- Form Actions -->
+                    <div class="flex items-center justify-between pt-6 border-t border-gray-100">
+                        <a href="{% url 'dashboard' %}" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition duration-300 flex items-center">
+                            <i class="fas fa-times mr-2"></i>
+                            Cancel
+                        </a>
+                        
+                        <button 
+                            type="submit" 
+                            class="danger-bg text-white px-8 py-3 rounded-lg font-bold hover:shadow-lg transition duration-300 flex items-center"
+                        >
+                            <i class="fas fa-save mr-2"></i>
+                            Save Expense
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Info Card -->
+        <div class="mt-6 bg-gradient-to-r from-red-50 to-orange-50 border border-red-100 rounded-2xl p-6 fade-in" style="animation-delay: 0.2s;">
+            <div class="flex items-start">
+                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mr-4 flex-shrink-0">
+                    <i class="fas fa-lightbulb text-red-600"></i>
+                </div>
+                <div>
+                    <h3 class="font-medium text-gray-800 mb-2">Expense Tracking Tips</h3>
+                    <ul class="text-gray-600 space-y-1 text-sm">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-red-500 mr-2 mt-1 flex-shrink-0"></i>
+                            <span>Be specific with titles for better categorization</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-red-500 mr-2 mt-1 flex-shrink-0"></i>
+                            <span>Record expenses immediately to avoid forgetting</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-red-500 mr-2 mt-1 flex-shrink-0"></i>
+                            <span>Use notes to track business vs personal expenses</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set default date to today if not editing
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateField = document.querySelector('input[name="date"]');
+            if (dateField && !dateField.value) {
+                const today = new Date();
+                const formattedDate = today.toISOString().split('T')[0];
+                dateField.value = formattedDate;
+            }
+            
+            // Format amount field on blur
+            const amountField = document.querySelector('input[name="amount"]');
+            if (amountField) {
+                amountField.addEventListener('blur', function() {
+                    if (this.value) {
+                        this.value = parseFloat(this.value).toFixed(2);
+                    }
+                });
+            }
+            
+            // Category suggestion based on title
+            const titleField = document.querySelector('input[name="title"]');
+            if (titleField) {
+                titleField.addEventListener('input', function() {
+                    const title = this.value.toLowerCase();
+                    const notesField = document.querySelector('textarea[name="notes"]');
+                    
+                    // Suggest category in notes based on keywords
+                    let categorySuggestion = '';
+                    if (title.includes('food') || title.includes('restaurant') || title.includes('grocer')) {
+                        categorySuggestion = 'Food & Dining';
+                    } else if (title.includes('fuel') || title.includes('transport') || title.includes('uber')) {
+                        categorySuggestion = 'Transportation';
+                    } else if (title.includes('rent') || title.includes('mortgage') || title.includes('house')) {
+                        categorySuggestion = 'Housing';
+                    } else if (title.includes('shopping') || title.includes('amazon') || title.includes('mall')) {
+                        categorySuggestion = 'Shopping';
+                    }
+                    
+                    // Only suggest if notes field is empty and we have a suggestion
+                    if (categorySuggestion && (!notesField.value || notesField.value === '')) {
+                        notesField.placeholder = `Category: ${categorySuggestion}. Add more details here...`;
+                    }
+                });
+            }
+            
+            // Form validation
+            const form = document.getElementById('expenseForm');
+            form.addEventListener('submit', function(e) {
+                const title = form.querySelector('input[name="title"]').value.trim();
+                const amount = form.querySelector('input[name="amount"]').value;
+                
+                if (!title) {
+                    e.preventDefault();
+                    highlightError(form.querySelector('input[name="title"]'), 'Please enter a title');
+                    return;
+                }
+                
+                if (!amount || parseFloat(amount) <= 0) {
+                    e.preventDefault();
+                    highlightError(form.querySelector('input[name="amount"]'), 'Please enter a valid amount');
+                    return;
+                }
+                
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+                submitBtn.disabled = true;
+                
+                // Re-enable button after 3 seconds (in case of error)
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 3000);
+            });
+            
+            function highlightError(inputElement, message) {
+                inputElement.classList.remove('border-gray-300');
+                inputElement.classList.add('border-red-500');
+                
+                // Remove existing error message
+                let existingError = inputElement.parentElement.nextElementSibling;
+                if (existingError && existingError.classList.contains('error-message')) {
+                    existingError.remove();
+                }
+                
+                // Add new error message
+                const errorMsg = document.createElement('p');
+                errorMsg.className = 'error-message text-red-500 text-sm mt-2';
+                errorMsg.textContent = message;
+                inputElement.parentElement.parentElement.appendChild(errorMsg);
+                
+                // Focus on the input
+                inputElement.focus();
+            }
+            
+            // Remove error styling on input
+            document.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('border-red-500');
+                    this.classList.add('border-gray-300');
+                    
+                    const errorMsg = this.parentElement.parentElement.querySelector('.error-message');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+            });
+            
+            // Amount field validation
+            const amountInput = document.querySelector('input[name="amount"]');
+            if (amountInput) {
+                amountInput.addEventListener('input', function() {
+                    const value = parseFloat(this.value);
+                    if (value > 100000) {
+                        this.parentElement.nextElementSibling.innerHTML = 
+                            '<span class="text-red-500 font-medium">Large expense detected! Consider splitting this purchase if possible.</span>';
+                    } else if (value > 50000) {
+                        this.parentElement.nextElementSibling.innerHTML = 
+                            '<span class="text-yellow-600 font-medium">Medium expense. Review if this fits your monthly budget.</span>';
+                    } else {
+                        this.parentElement.nextElementSibling.innerHTML = 
+                            '<span class="text-gray-500">Enter the expense amount in Pakistani Rupees</span>';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
